@@ -11,7 +11,7 @@ A futuristic timekeeping system that converts UTC time into metric time with 100
 
 ## Demo
 
-Visit the demo at [GitHub Pages Demo](https://username.github.io/100-hours/).
+Visit the demo at [GitHub Pages Demo](https://dragoscv.github.io/100-hours/).
 
 ## Usage
 
