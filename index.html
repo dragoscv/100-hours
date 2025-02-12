@@ -13,15 +13,13 @@
     <div class="text-center max-w-3xl">
         <h1 class="text-4xl font-bold mb-4">100-Hour Day Clock</h1>
 
-
-
         <p class="mb-6">
             Welcome to the future of timekeeping! In our new system, a day is divided into
             <span class="font-semibold">100 metric hours</span> – each lasting 14.4 minutes.
             For those who love comparisons, the current UTC time is also displayed.
         </p>
         <p class="mb-6 text-sm text-gray-400">
-            <strong>Why this will be the future calendar & time keeping format:</strong>
+            <strong>Why this will be the future calendar &amp; time keeping format:</strong>
             Our new system is simpler and more logical than traditional timekeeping. With 100 metric hours in a day, 100
             metric minutes in an hour, and 10 metric seconds in a minute, every part of the day is divided equally. This
             uniformity makes schedules predictable and planning straightforward for everyone.
@@ -99,6 +97,49 @@
             <button id="reverseConvertButton" class="p-2 bg-blue-500 rounded ml-2 mt-4">Reverse Convert</button>
             <div id="reverseConverterResult" class="mt-2 text-lg"></div>
         </div>
+
+        <!-- Detailed Explanation Section -->
+        <div class="mt-6 p-4 bg-gray-800 rounded-lg shadow-lg text-left">
+            <h2 class="text-xl font-bold mb-2">Detailed Explanation: Metric Time Computation</h2>
+            <p class="mb-2">
+                In our metric system, one day is redefined to consist of exactly 100,000 metric seconds. Contrast this
+                with a standard day which has 86,400 seconds.
+            </p>
+            <p class="mb-2">
+                The conversion factor is calculated as:
+            </p>
+            <p class="mb-2 font-mono">
+                conversionFactor = 100,000 / 86,400 ≈ 1.15740741
+            </p>
+            <p class="mb-2">
+                This means that every UTC second is multiplied by approximately 1.15741 to get the number of metric
+                seconds elapsed in the day.
+                Inversely, a metric second is:
+            </p>
+            <p class="mb-2 font-mono">
+                1 metric second = 1 / conversionFactor ≈ 0.864 actual seconds
+            </p>
+            <p class="mb-2">
+                <strong>Mathematical Breakdown:</strong> Suppose it is exactly 12:00:00 UTC. At this point, 43,200
+                actual seconds have elapsed since midnight.
+                The corresponding metric seconds would be:
+            </p>
+            <p class="mb-2 font-mono">
+                metricTotalSeconds = 43,200 * (100,000 / 86,400) = 50,000 metric seconds
+            </p>
+            <p class="mb-2">
+                Then, metric hours, minutes, and seconds are derived by dividing metricTotalSeconds appropriately:
+            </p>
+            <ul class="list-disc ml-6 mb-2">
+                <li>1 metric hour = 1,000 metric seconds</li>
+                <li>1 metric minute = 10 metric seconds</li>
+                <li>1 metric second remains as the smallest unit, though it is shorter than a UTC second</li>
+            </ul>
+            <p>
+                Because metric seconds are based on this conversion, they are not synchronized with the traditional
+                60-second minute of UTC time. This is inherent to the new timekeeping system's structure.
+            </p>
+        </div>
     </div>
 
     <!-- Footer with links -->
@@ -108,8 +149,8 @@
             <a href="https://github.com/dragoscv/100-hours" class="underline hover:text-white" target="_blank"
                 rel="noopener">GitHub</a>
             | Visit my website at
-            <a href="https://dragoscatalin.ro" class="underline hover:text-white" target="_blank" rel="noopener">
-                dragoscatalin.ro</a>
+            <a href="https://dragoscatalin.ro" class="underline hover:text-white" target="_blank"
+                rel="noopener">dragoscatalin.ro</a>
         </p>
     </footer>
 
