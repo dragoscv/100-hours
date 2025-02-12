@@ -9,6 +9,10 @@ A futuristic timekeeping system that converts UTC time into metric time with 100
 - **Metric Calendar:** Converts dates into a uniform metric calendar format.
 - **Converters:** Forward and reverse conversion between UTC and metric time.
 
+## Demo
+
+Visit the demo at [GitHub Pages Demo](https://username.github.io/100-hours/).
+
 ## Usage
 
 1. Open `index.html` in your web browser.
