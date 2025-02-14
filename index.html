@@ -3,130 +3,225 @@
 
 <head>
     <meta charset="UTF-8" />
-    <title>100-Hour Day Clock & Metric Calendar Converter</title>
+    <title>Metric Time System Comparison and Converters</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-gray-900 text-white flex flex-col items-center justify-center min-h-screen p-4">
-    <div class="text-center max-w-3xl">
-        <h1 class="text-4xl font-bold mb-4">100-Hour Day Clock</h1>
-
-        <p class="mb-6">
-            Welcome to the future of timekeeping! In our new system, a day is defined as <span class="font-semibold">100
-                metric hours</span>.
-            That is, “tomorrow” means 100 hours from now (360,000 seconds). The seconds remain the same as UTC seconds.
-            For those who love comparisons, the current UTC time is also displayed.
-        </p>
-        <p class="mb-6 text-sm text-gray-400">
-            <strong>Why this will be the future calendar &amp; time keeping format:</strong>
-            Our system is simpler and more logical. Instead of a 24‑hour day, we use a 100‑hour day.
-            Scheduling becomes intuitive – if someone says “see you tomorrow,” you know it’s 100 hours later.
-            <br /><br />
-            <strong>For children:</strong> Imagine your day as one huge clock with 100 hours instead of 24. Every second
-            is the same as today,
-            but “tomorrow” is 100 hours away!
-            <br /><br />
-            <strong>Comparison between calendars:</strong> Traditional calendars have irregular month lengths and leap
-            years.
-            Our metric calendar is consistent: every metric day lasts 100 hours, and we group days into neat months and
-            years.
-            <br /><br />
-            <strong>10 Example Use Cases:</strong>
-        <ol>
-            <li>Scheduling school classes that span several traditional days.</li>
-            <li>Planning long-duration sports events.</li>
-            <li>Coordinating public transportation on a continuous cycle.</li>
-            <li>Setting reminders that are exactly 100 hours apart.</li>
-            <li>Designing futuristic smartwatches and clocks.</li>
-            <li>Creating fun, time-based puzzles and learning games.</li>
-            <li>Scheduling TV shows and online streaming programs in extended cycles.</li>
-            <li>Organizing workout sessions over multiple UTC days.</li>
-            <li>Managing timelines for extended space missions.</li>
-            <li>Coordinating international business meetings on a continuous calendar.</li>
-        </ol>
-        <br />
-        This new format helps everyone plan events with a simple rule: “See you next day” means in exactly 100 hours.
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Page Header -->
+        <h1 class="text-4xl font-bold text-center mb-6">
+            Metric Time System Comparison and Converters
+        </h1>
+        <p class="text-center mb-8">
+            Compare two proposed metric time systems, see live displays, and convert between Gregorian and metric time!
         </p>
 
-        <!-- New Container for Cards -->
-        <div class="flex flex-col md:flex-row gap-6">
-            <!-- Time Display Card -->
-            <div class="bg-gray-800 p-6 rounded-lg shadow-lg flex-1">
-                <div id="metricTime" class="text-2xl font-mono mb-2">
-                    Metric Time: --:--:--
+        <!-- Global Milliseconds Checkbox -->
+        <div class="flex justify-center mb-6">
+            <label for="toggleMilliseconds" class="mr-2">Display Milliseconds:</label>
+            <input type="checkbox" id="toggleMilliseconds" />
+        </div>
+
+        <!-- Metric System Display Cards: Option A and Option B -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <!-- Option A: Fully Metric System -->
+            <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-bold mb-4">Option A: Fully Metric</h2>
+                <p class="mb-4">
+                    <strong>System:</strong> 100 seconds per minute, 100 minutes per hour, 100 hours per day, and 100
+                    days per year.
+                </p>
+                <p class="mb-4">
+                    <strong>Calculation:</strong> We redefine the second so that the solar day (86,400 actual seconds)
+                    becomes 1,000,000 metric seconds.
+                    <br /><code>conversionFactor = 1,000,000 / 86,400 ≈ 11.57407</code>
+                    <br />(1 metric second ≈ 0.0864 actual seconds).
+                </p>
+                <div class="bg-gray-700 p-4 rounded mb-4">
+                    <p id="metricTimeA" class="font-mono text-lg">Metric Time (A): --:--:--</p>
+                    <p id="metricDateA" class="font-mono text-lg">Metric Date (A): Year --, Day --</p>
                 </div>
-                <div id="utcTime" class="text-xl font-mono">
-                    UTC Time: --:--:--
+                <p>
+                    <strong>Example:</strong> At 12:00 UTC (43,200 sec since midnight), the metric time becomes roughly
+                    50:00:00.
+                    This neat base‑10 division makes calculations very intuitive.
+                </p>
+            </div>
+
+            <!-- Option B: Hybrid System -->
+            <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-bold mb-4">Option B: Hybrid</h2>
+                <p class="mb-4">
+                    <strong>System:</strong> Standard seconds (60/sec) and minutes (60/min) remain unchanged,
+                    but we define the day as 100 hours (100 × 3,600 = 360,000 seconds) and the year as 300 days.
+                </p>
+                <p class="mb-4">
+                    <strong>Calculation:</strong> In this system the seconds remain the same as UTC seconds.
+                    For the time-of-day, we compute the elapsed seconds modulo 360,000.
+                    The calendar divides the year into 300 days (or 10 months of 30 days each).
+                </p>
+                <div class="bg-gray-700 p-4 rounded mb-4">
+                    <p id="metricTimeB" class="font-mono text-lg">Metric Time (B): --:--:--</p>
+                    <p id="metricDateB" class="font-mono text-lg">Metric Date (B): Year --, Day --</p>
+                    <p id="metricMonthB" class="font-mono text-lg"></p>
                 </div>
-                <!-- Milliseconds Toggle Switch -->
-                <div class="flex items-center justify-center mb-4">
-                    <label for="toggleMilliseconds" class="mr-2">Display Milliseconds:</label>
-                    <input type="checkbox" id="toggleMilliseconds" />
+                <p>
+                    <strong>Example:</strong> If 180,000 seconds have elapsed in the metric day, the time is 50:00:00.
+                    This system preserves our familiar seconds and minutes for technical precision.
+                </p>
+            </div>
+        </div>
+
+        <!-- Gregorian Calendar Card (Full Date & Time) -->
+        <div class="bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
+            <h2 class="text-2xl font-bold mb-4">Gregorian Calendar</h2>
+            <div class="bg-gray-700 p-4 rounded mb-4">
+                <p id="gregorianCalendar" class="font-mono text-lg">Gregorian Date & Time: --</p>
+            </div>
+            <p>
+                The standard calendar based on Earth's rotation and orbit. This card shows the current UTC date and
+                time.
+            </p>
+        </div>
+
+        <!-- Converter Sections -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <!-- Option A Converters -->
+            <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-bold mb-4">Option A Converters</h2>
+                <!-- Forward Converter -->
+                <div class="mb-4">
+                    <h3 class="text-xl font-semibold mb-2">Forward Converter:<br />Gregorian → Option A</h3>
+                    <label for="dateInputA" class="block mb-2">Select Gregorian Date &amp; Time:</label>
+                    <input type="datetime-local" id="dateInputA" class="p-2 rounded text-black" />
+                    <button id="convertButtonA" class="p-2 bg-blue-500 rounded ml-2 mt-2">
+                        Convert
+                    </button>
+                    <div id="converterResultA" class="mt-2 text-lg"></div>
+                </div>
+                <!-- Reverse Converter -->
+                <div>
+                    <h3 class="text-xl font-semibold mb-2">Reverse Converter:<br />Option A → Gregorian</h3>
+                    <label for="metricDaysInputA" class="block mb-2">Metric Days since Jan 1, 2000:</label>
+                    <input type="number" id="metricDaysInputA" class="p-2 rounded text-black" placeholder="e.g., 100" />
+                    <label for="metricTimeInputA" class="block mt-4 mb-2">Metric Time (HH:MM:SS):</label>
+                    <input type="text" id="metricTimeInputA" class="p-2 rounded text-black"
+                        placeholder="e.g., 12:34:56" />
+                    <button id="reverseConvertButtonA" class="p-2 bg-blue-500 rounded ml-2 mt-4">
+                        Reverse Convert
+                    </button>
+                    <div id="reverseConverterResultA" class="mt-2 text-lg"></div>
                 </div>
             </div>
 
-            <!-- Metric Calendar Card -->
-            <div class="bg-gray-800 p-6 rounded-lg shadow-lg flex-1">
-                <h2 class="text-xl font-bold mb-2">Metric Calendar (since Jan 1, 2000)</h2>
-                <div id="metricCalendarDisplay" class="text-lg">
-                    Loading...
+            <!-- Option B Converters -->
+            <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-bold mb-4">Option B Converters</h2>
+                <!-- Forward Converter -->
+                <div class="mb-4">
+                    <h3 class="text-xl font-semibold mb-2">Forward Converter:<br />Gregorian → Option B</h3>
+                    <label for="dateInputB" class="block mb-2">Select Gregorian Date &amp; Time:</label>
+                    <input type="datetime-local" id="dateInputB" class="p-2 rounded text-black" />
+                    <button id="convertButtonB" class="p-2 bg-blue-500 rounded ml-2 mt-2">
+                        Convert
+                    </button>
+                    <div id="converterResultB" class="mt-2 text-lg"></div>
+                </div>
+                <!-- Reverse Converter -->
+                <div>
+                    <h3 class="text-xl font-semibold mb-2">Reverse Converter:<br />Option B → Gregorian</h3>
+                    <label for="metricDaysInputB" class="block mb-2">Metric Days (Option B) since Jan 1, 2000:</label>
+                    <input type="number" id="metricDaysInputB" class="p-2 rounded text-black" placeholder="e.g., 100" />
+                    <label for="metricTimeInputB" class="block mt-4 mb-2">Metric Time (HH:MM:SS):</label>
+                    <input type="text" id="metricTimeInputB" class="p-2 rounded text-black"
+                        placeholder="e.g., 12:34:56" />
+                    <button id="reverseConvertButtonB" class="p-2 bg-blue-500 rounded ml-2 mt-4">
+                        Reverse Convert
+                    </button>
+                    <div id="reverseConverterResultB" class="mt-2 text-lg"></div>
                 </div>
             </div>
         </div>
 
-        <!-- Date Converter Section -->
-        <div class="mt-6 p-4 bg-gray-800 rounded-lg shadow-lg">
-            <h2 class="text-xl font-bold mb-2">Forward Converter: UTC &rarr; Metric</h2>
-            <p class="mb-2">Convert a UTC date into metric time and calendar date.</p>
-            <label for="dateInput" class="block mb-2">Select a date and time:</label>
-            <input type="datetime-local" id="dateInput" class="p-2 rounded text-black" placeholder="YYYY-MM-DDTHH:MM" />
-            <button id="convertButton" class="p-2 bg-blue-500 rounded ml-2">Convert</button>
-            <div id="converterResult" class="mt-2 text-lg"></div>
+        <!-- Detailed Descriptions and Examples -->
+        <div class="bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
+            <h2 class="text-2xl font-bold mb-4">100-Hour Day Clock</h2>
+            <p class="mb-4">
+                Welcome to the future of timekeeping! In our new system, a day is defined as 100 metric hours.
+                That is, “tomorrow” means 100 hours from now (360,000 seconds). The seconds remain the same as UTC
+                seconds.
+                For those who love comparisons, the current UTC time is also displayed.
+            </p>
+            <p class="mb-4">
+                <strong>Why this will be the future calendar &amp; time keeping format:</strong> Our system is simpler
+                and more logical.
+                Instead of a 24‑hour day, we use a 100‑hour day. Scheduling becomes intuitive – if someone says “see you
+                tomorrow,” you know it’s 100 hours later.
+            </p>
+            <p class="mb-4">
+                <strong>For children:</strong> Imagine your day as one huge clock with 100 hours instead of 24. Every
+                second is the same as today,
+                but “tomorrow” is 100 hours away!
+            </p>
+            <p class="mb-4">
+                <strong>Comparison between calendars:</strong> Traditional calendars have irregular month lengths and
+                leap years.
+                Our metric calendar is consistent: every metric day lasts 100 hours, and we group days into neat months
+                and years.
+            </p>
+            <p class="mb-4">
+                <strong>10 Example Use Cases:</strong>
+            </p>
+            <ul class="list-decimal list-inside mb-4">
+                <li>Scheduling school classes that span several traditional days.</li>
+                <li>Planning long-duration sports events.</li>
+                <li>Coordinating public transportation on a continuous cycle.</li>
+                <li>Setting reminders that are exactly 100 hours apart.</li>
+                <li>Designing futuristic smartwatches and clocks.</li>
+                <li>Creating fun, time-based puzzles and learning games.</li>
+                <li>Scheduling TV shows and online streaming programs in extended cycles.</li>
+                <li>Organizing workout sessions over multiple UTC days.</li>
+                <li>Managing timelines for extended space missions.</li>
+                <li>Coordinating international business meetings on a continuous calendar.</li>
+            </ul>
+            <p>
+                This new format helps everyone plan events with a simple rule: “See you next day” means in exactly 100
+                hours.
+            </p>
         </div>
 
-        <!-- Reverse Converter Section -->
-        <div class="mt-6 p-4 bg-gray-800 rounded-lg shadow-lg">
-            <h2 class="text-xl font-bold mb-2">Reverse Converter: Metric &rarr; UTC</h2>
-            <p class="mb-2">Enter metric calendar day and metric time (HH:MM:SS) to convert back to UTC.</p>
-            <label for="metricDaysInput" class="block mb-2">Metric Days since Jan 1, 2000:</label>
-            <input type="number" id="metricDaysInput" class="p-2 rounded text-black" placeholder="e.g., 100" />
-            <label for="metricTimeInput" class="block mt-4 mb-2">Metric Time (HH:MM:SS):</label>
-            <input type="text" id="metricTimeInput" class="p-2 rounded text-black" placeholder="e.g., 12:34:56" />
-            <button id="reverseConvertButton" class="p-2 bg-blue-500 rounded ml-2 mt-4">Reverse Convert</button>
-            <div id="reverseConverterResult" class="mt-2 text-lg"></div>
-        </div>
-
-        <!-- Detailed Explanation Section -->
-        <div class="mt-6 p-4 bg-gray-800 rounded-lg shadow-lg text-left">
-            <h2 class="text-xl font-bold mb-2">Detailed Explanation: 100‑Hour Day Computation</h2>
-            <p class="mb-2">
+        <div class="bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
+            <h2 class="text-2xl font-bold mb-4">Detailed Explanation: 100‑Hour Day Computation</h2>
+            <p class="mb-4">
                 Our new metric time system is based on a 100‑hour day. Each metric day consists of exactly 100 hours,
                 which is 100 × 3,600 = 360,000 seconds. In this system the second remains the same as the standard UTC
                 second.
             </p>
-            <p class="mb-2">
+            <p class="mb-4">
                 This means that when you say “see you tomorrow” it really means “see you in 100 hours.”
             </p>
-            <p class="mb-2">
+            <p class="mb-4">
                 The metric day is divided exactly like our usual clock:
             </p>
-            <ul class="list-disc ml-6 mb-2">
+            <ul class="list-disc list-inside mb-4">
                 <li>1 metric hour = 3,600 seconds</li>
                 <li>1 metric minute = 60 seconds</li>
                 <li>1 metric second = 1 actual (UTC) second</li>
             </ul>
-            <p class="mb-2">
+            <p class="mb-4">
                 Moreover, our metric calendar divides time into metric days, months, and years. We define:
-                <br /><br />
-                • 1 metric month = 30 metric days<br />
-                • 1 metric year = 10 metric months (300 metric days)
             </p>
-            <p class="mb-2">
+            <ul class="list-disc list-inside mb-4">
+                <li>1 metric month = 30 metric days</li>
+                <li>1 metric year = 10 metric months (300 metric days)</li>
+            </ul>
+            <p class="mb-4">
                 For clarity, we name the metric months as follows:
-                <br />
-                <strong>Primus, Secundus, Tertius, Quartus, Quintus, Sextus, Septimus, Octavus, Nonus, Decimus.</strong>
+                <br /><strong>Primus, Secundus, Tertius, Quartus, Quintus, Sextus, Septimus, Octavus, Nonus,
+                    Decimus.</strong>
             </p>
             <p>
                 For example, if the metric day count is 45, then this would be Day 15 of the 2nd month (Secundus) in
@@ -137,8 +232,8 @@
         </div>
     </div>
 
-    <!-- Footer with links -->
-    <footer class="mt-8 text-sm text-gray-400">
+    <!-- Footer -->
+    <footer class="mt-8 text-sm text-gray-400 text-center">
         <p>
             View the source on
             <a href="https://github.com/dragoscv/100-hours" class="underline hover:text-white" target="_blank"
@@ -149,161 +244,255 @@
         </p>
     </footer>
 
-    <!-- JavaScript code (converted to plain JavaScript) -->
-    <script type="module">
+    <!-- JavaScript Code (Plain JS) -->
+    <script>
         // Helper function to pad numbers with leading zeros.
-        function pad(num, size = 2) {
+        function pad(num, size) {
+            size = size || 2;
             return num.toString().padStart(size, '0');
         }
 
-        // Global flag for displaying milliseconds. Default is false.
-        let showMilliseconds = false;
-        const toggleMilliseconds = document.getElementById("toggleMilliseconds");
+        // Global flag for milliseconds.
+        var showMilliseconds = false;
+        var toggleMilliseconds = document.getElementById("toggleMilliseconds");
         if (toggleMilliseconds) {
-            toggleMilliseconds.addEventListener("change", (e) => {
+            toggleMilliseconds.addEventListener("change", function (e) {
                 showMilliseconds = e.target.checked;
             });
         }
 
-        // New constant: one metric day lasts 100 hours = 360,000 seconds.
-        const METRIC_DAY_SECONDS = 360000;
+        // Epoch for calendar calculations: Jan 1, 2000 UTC.
+        var epoch = new Date("2000-01-01T00:00:00Z");
 
-        // Array of metric month names.
-        const monthNames = ["Primus", "Secundus", "Tertius", "Quartus", "Quintus", "Sextus", "Septimus", "Octavus", "Nonus", "Decimus"];
-
-        // Update the clock display.
-        function updateClock() {
-            const now = new Date();
-
-            // Current UTC time.
-            const utcHours = now.getUTCHours();
-            const utcMinutes = now.getUTCMinutes();
-            const utcSeconds = now.getUTCSeconds();
-            const utcMilliseconds = now.getUTCMilliseconds();
-
-            // Use a fixed epoch (Jan 1, 2000 UTC) to calculate metric time.
-            const epoch = new Date("2000-01-01T00:00:00Z");
-            const elapsedSeconds = (now - epoch) / 1000;
-
-            // Determine the current metric time within the 100‑hour cycle.
-            const metricSecondsOfDay = elapsedSeconds % METRIC_DAY_SECONDS;
-            const metricHour = Math.floor(metricSecondsOfDay / 3600);
-            const remainder = metricSecondsOfDay % 3600;
-            const metricMinute = Math.floor(remainder / 60);
-            const metricSecond = Math.floor(remainder % 60);
-            const metricMilli = Math.floor((remainder - Math.floor(remainder)) * 1000);
-
-            let formattedUTCTime, formattedMetricTime;
+        // -------------------------------
+        // Option A: Fully Metric System
+        // -------------------------------
+        function updateOptionA() {
+            var now = new Date();
+            var utcHours = now.getUTCHours();
+            var utcMinutes = now.getUTCMinutes();
+            var utcSeconds = now.getUTCSeconds();
+            var utcMilliseconds = now.getUTCMilliseconds();
+            var totalActualSeconds = utcHours * 3600 + utcMinutes * 60 + utcSeconds + utcMilliseconds / 1000;
+            var conversionFactorA = 1000000 / 86400; // ≈ 11.57407
+            var metricSecondsOfDay = totalActualSeconds * conversionFactorA;
+            var metricHour = Math.floor(metricSecondsOfDay / 10000);
+            var remainderAfterHour = metricSecondsOfDay % 10000;
+            var metricMinute = Math.floor(remainderAfterHour / 100);
+            var metricSecond = Math.floor(remainderAfterHour % 100);
+            var metricMilli = "";
             if (showMilliseconds) {
-                formattedUTCTime = `${pad(utcHours)}:${pad(utcMinutes)}:${pad(utcSeconds)}.${pad(utcMilliseconds, 3)}`;
-                formattedMetricTime = `${pad(metricHour, 2)}:${pad(metricMinute, 2)}:${pad(metricSecond, 2)}.${pad(metricMilli, 3)}`;
-            } else {
-                formattedUTCTime = `${pad(utcHours)}:${pad(utcMinutes)}:${pad(utcSeconds)}`;
-                formattedMetricTime = `${pad(metricHour, 2)}:${pad(metricMinute, 2)}:${pad(metricSecond, 2)}`;
+                metricMilli = "." + pad(Math.floor((metricSecondsOfDay - Math.floor(metricSecondsOfDay)) * 1000), 3);
             }
-
-            const metricTimeElem = document.getElementById('metricTime');
-            const utcTimeElem = document.getElementById('utcTime');
-            if (metricTimeElem) {
-                metricTimeElem.textContent = 'Metric Time: ' + formattedMetricTime;
+            var metricTimeA = pad(metricHour, 2) + ":" + pad(metricMinute, 2) + ":" + pad(metricSecond, 2) + metricMilli;
+            var metricTimeAElement = document.getElementById("metricTimeA");
+            if (metricTimeAElement) {
+                metricTimeAElement.textContent = "Metric Time (A): " + metricTimeA;
             }
-            if (utcTimeElem) {
-                utcTimeElem.textContent = 'UTC Time: ' + formattedUTCTime;
+            var msPerDay = 86400000;
+            var dayCount = Math.floor((now.getTime() - epoch.getTime()) / msPerDay);
+            var metricYearA = Math.floor(dayCount / 100);
+            var dayOfYearA = (dayCount % 100) + 1;
+            var metricDateAElement = document.getElementById("metricDateA");
+            if (metricDateAElement) {
+                metricDateAElement.textContent = "Metric Date (A): Year " + metricYearA + ", Day " + dayOfYearA + " of 100";
             }
         }
 
-        // Forward Date Converter: Convert a UTC date into metric time + metric calendar date.
-        const convertButton = document.getElementById("convertButton");
-        if (convertButton) {
-            convertButton.addEventListener("click", function () {
-                const dateInput = document.getElementById("dateInput");
-                if (dateInput && dateInput.value) {
-                    const inputDate = new Date(dateInput.value);
-                    const epoch = new Date("2000-01-01T00:00:00Z");
-                    const elapsedSeconds = (inputDate - epoch) / 1000;
+        // -------------------------------
+        // Option B: Hybrid System
+        // -------------------------------
+        function updateOptionB() {
+            var now = new Date();
+            var elapsedSeconds = (now.getTime() - epoch.getTime()) / 1000;
+            var secondsPerMetricDayB = 360000; // 100 hours × 3600 sec
+            var metricDaySecondsB = elapsedSeconds % secondsPerMetricDayB;
+            var metricHourB = Math.floor(metricDaySecondsB / 3600);
+            var remainderB = metricDaySecondsB % 3600;
+            var metricMinuteB = Math.floor(remainderB / 60);
+            var metricSecondB = Math.floor(remainderB % 60);
+            var metricMilliB = "";
+            if (showMilliseconds) {
+                metricMilliB = "." + pad(Math.floor((metricDaySecondsB - Math.floor(metricDaySecondsB)) * 1000), 3);
+            }
+            var metricTimeB = pad(metricHourB, 2) + ":" + pad(metricMinuteB, 2) + ":" + pad(metricSecondB, 2) + metricMilliB;
+            var metricTimeBElement = document.getElementById("metricTimeB");
+            if (metricTimeBElement) {
+                metricTimeBElement.textContent = "Metric Time (B): " + metricTimeB;
+            }
+            var metricDayCountB = Math.floor(elapsedSeconds / secondsPerMetricDayB);
+            var metricYearB = Math.floor(metricDayCountB / 300);
+            var dayOfYearB = (metricDayCountB % 300) + 1;
+            var metricDateBElement = document.getElementById("metricDateB");
+            if (metricDateBElement) {
+                metricDateBElement.textContent = "Metric Date (B): Year " + metricYearB + ", Day " + dayOfYearB + " of 300";
+            }
+            var metricMonthB = Math.floor((dayOfYearB - 1) / 30) + 1;
+            var metricDayOfMonthB = ((dayOfYearB - 1) % 30) + 1;
+            var metricMonthBElement = document.getElementById("metricMonthB");
+            if (metricMonthBElement) {
+                metricMonthBElement.textContent = "(Month " + pad(metricMonthB) + ", Day " + pad(metricDayOfMonthB) + ")";
+            }
+        }
 
-                    // Metric time for the day.
-                    const metricSecondsOfDay = elapsedSeconds % METRIC_DAY_SECONDS;
-                    const metricHour = Math.floor(metricSecondsOfDay / 3600);
-                    const remainder = metricSecondsOfDay % 3600;
-                    const metricMinute = Math.floor(remainder / 60);
-                    const metricSecond = Math.floor(remainder % 60);
-                    let formattedMetricTime;
+        // -------------------------------
+        // Gregorian Calendar Update
+        // -------------------------------
+        function updateGregorianCalendar() {
+            var now = new Date();
+            var year = now.getUTCFullYear();
+            var month = pad(now.getUTCMonth() + 1);
+            var day = pad(now.getUTCDate());
+            var hours = pad(now.getUTCHours());
+            var minutes = pad(now.getUTCMinutes());
+            var seconds = pad(now.getUTCSeconds());
+            var gregorianDateTime = year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds + " UTC";
+            var gregorianCalendarElem = document.getElementById("gregorianCalendar");
+            if (gregorianCalendarElem) {
+                gregorianCalendarElem.textContent = "Gregorian Date & Time: " + gregorianDateTime;
+            }
+        }
+
+        // -------------------------------
+        // Option A Converters
+        // -------------------------------
+        // Forward Converter: Gregorian → Option A
+        var convertButtonA = document.getElementById("convertButtonA");
+        if (convertButtonA) {
+            convertButtonA.addEventListener("click", function () {
+                var dateInputA = document.getElementById("dateInputA");
+                if (dateInputA && dateInputA.value) {
+                    var inputDate = new Date(dateInputA.value);
+                    var inputUTCHours = inputDate.getUTCHours();
+                    var inputUTCMinutes = inputDate.getUTCMinutes();
+                    var inputUTCSeconds = inputDate.getUTCSeconds();
+                    var inputUTCMilliseconds = inputDate.getUTCMilliseconds();
+                    var totalInputSeconds = inputUTCHours * 3600 + inputUTCMinutes * 60 + inputUTCSeconds + inputUTCMilliseconds / 1000;
+                    var conversionFactorA = 1000000 / 86400;
+                    var inputMetricSeconds = totalInputSeconds * conversionFactorA;
+                    var metricHour = Math.floor(inputMetricSeconds / 10000);
+                    var remainder = inputMetricSeconds % 10000;
+                    var metricMinute = Math.floor(remainder / 100);
+                    var metricSecond = Math.floor(remainder % 100);
+                    var metricMilli = "";
                     if (showMilliseconds) {
-                        const metricMilli = Math.floor((remainder - Math.floor(remainder)) * 1000);
-                        formattedMetricTime = `${pad(metricHour, 2)}:${pad(metricMinute, 2)}:${pad(metricSecond, 2)}.${pad(metricMilli, 3)}`;
-                    } else {
-                        formattedMetricTime = `${pad(metricHour, 2)}:${pad(metricMinute, 2)}:${pad(metricSecond, 2)}`;
+                        metricMilli = "." + pad(Math.floor((inputMetricSeconds - Math.floor(inputMetricSeconds)) * 1000), 3);
                     }
-
-                    // Metric calendar computation.
-                    const metricDays = Math.floor(elapsedSeconds / METRIC_DAY_SECONDS);
-                    const metricYear = Math.floor(metricDays / 300);
-                    const dayOfYear = metricDays % 300; // 0…299
-                    const metricMonthIndex = Math.floor(dayOfYear / 30); // 0…9
-                    const metricDayOfMonth = (dayOfYear % 30) + 1;
-                    const metricDateText = `Year: ${metricYear}, Month: ${monthNames[metricMonthIndex]}, Day: ${metricDayOfMonth}`;
-
-                    const converterResult = document.getElementById("converterResult");
-                    if (converterResult) {
-                        converterResult.innerHTML = "<strong>Metric Time:</strong> " + formattedMetricTime +
-                            "<br/><strong>Metric Date:</strong> " + metricDateText;
+                    var formattedMetricTime = pad(metricHour, 2) + ":" + pad(metricMinute, 2) + ":" + pad(metricSecond, 2) + metricMilli;
+                    var msPerDay = 86400000;
+                    var dayCount = Math.floor((inputDate.getTime() - epoch.getTime()) / msPerDay);
+                    var metricYearA = Math.floor(dayCount / 100);
+                    var dayOfYearA = (dayCount % 100) + 1;
+                    var formattedMetricDate = "Year " + metricYearA + ", Day " + dayOfYearA + " of 100";
+                    var converterResultA = document.getElementById("converterResultA");
+                    if (converterResultA) {
+                        converterResultA.innerHTML = "<strong>Option A Metric Time:</strong> " + formattedMetricTime + "<br/><strong>Metric Date:</strong> " + formattedMetricDate;
                     }
                 }
             });
         }
 
-        // Update the Metric Calendar Display.
-        function updateCalendar() {
-            const epoch = new Date("2000-01-01T00:00:00Z");
-            const now = new Date();
-            const elapsedSeconds = (now - epoch) / 1000;
-            const metricDays = Math.floor(elapsedSeconds / METRIC_DAY_SECONDS);
-            const metricYear = Math.floor(metricDays / 300);
-            const dayOfYear = metricDays % 300;
-            const metricMonthIndex = Math.floor(dayOfYear / 30);
-            const metricDayOfMonth = (dayOfYear % 30) + 1;
-            const displayText = `Metric Date: Year ${metricYear}, ${monthNames[metricMonthIndex]} ${metricDayOfMonth} (Total Days: ${metricDays})`;
-            const calendarElem = document.getElementById("metricCalendarDisplay");
-            if (calendarElem) {
-                calendarElem.textContent = displayText;
-            }
-        }
-
-        // Reverse Converter: Convert Metric (calendar day + time) back to UTC.
-        const reverseConvertButton = document.getElementById("reverseConvertButton");
-        if (reverseConvertButton) {
-            reverseConvertButton.addEventListener("click", function () {
-                const metricDaysInput = document.getElementById("metricDaysInput").value;
-                const metricTimeInput = document.getElementById("metricTimeInput").value;
-                if (!metricDaysInput || !metricTimeInput) return;
-                const days = parseInt(metricDaysInput, 10);
-                const parts = metricTimeInput.split(":").map(p => p.trim());
-                if (parts.length !== 3 ||
-                    isNaN(parseInt(parts[0], 10)) ||
-                    isNaN(parseInt(parts[1], 10)) ||
-                    isNaN(parseInt(parts[2], 10))) {
-                    alert("Please enter metric time in HH:MM:SS format.");
+        // Reverse Converter: Option A → Gregorian
+        var reverseConvertButtonA = document.getElementById("reverseConvertButtonA");
+        if (reverseConvertButtonA) {
+            reverseConvertButtonA.addEventListener("click", function () {
+                var metricDaysInputA = document.getElementById("metricDaysInputA").value;
+                var metricTimeInputA = document.getElementById("metricTimeInputA").value;
+                if (!metricDaysInputA || !metricTimeInputA) return;
+                var days = parseInt(metricDaysInputA, 10);
+                var parts = metricTimeInputA.split(":").map(function (p) { return p.trim(); });
+                if (parts.length !== 3 || isNaN(parseInt(parts[0], 10)) || isNaN(parseInt(parts[1], 10)) || isNaN(parseInt(parts[2], 10))) {
+                    alert("Please enter Option A metric time in HH:MM:SS format.");
                     return;
                 }
-                const hours = parseInt(parts[0], 10);
-                const minutes = parseInt(parts[1], 10);
-                const seconds = parseInt(parts[2], 10);
-                const metricTimeSec = hours * 3600 + minutes * 60 + seconds;
-                const totalMetricSec = days * METRIC_DAY_SECONDS + metricTimeSec;
-                const epoch = new Date("2000-01-01T00:00:00Z");
-                const utcDate = new Date(epoch.getTime() + totalMetricSec * 1000);
-                const reverseConverterResult = document.getElementById("reverseConvertButton").nextElementSibling;
-                if (reverseConverterResult) {
-                    reverseConverterResult.textContent = "UTC Date: " + utcDate.toUTCString();
+                var hours = parseInt(parts[0], 10);
+                var minutes = parseInt(parts[1], 10);
+                var seconds = parseInt(parts[2], 10);
+                var metricTimeSec = hours * 10000 + minutes * 100 + seconds;
+                var conversionFactorA = 1000000 / 86400;
+                var actualSeconds = metricTimeSec / conversionFactorA;
+                var gregorianDate = new Date(epoch.getTime() + (days * 86400 + actualSeconds) * 1000);
+                var reverseConverterResultA = document.getElementById("reverseConverterResultA");
+                if (reverseConverterResultA) {
+                    reverseConverterResultA.textContent = "Gregorian Date: " + gregorianDate.toUTCString();
                 }
             });
         }
 
-        // Start the updates.
-        setInterval(() => { updateClock(); updateCalendar(); }, 100);
-        updateClock();
-        updateCalendar();
+        // -------------------------------
+        // Option B Converters
+        // -------------------------------
+        // Forward Converter: Gregorian → Option B
+        var convertButtonB = document.getElementById("convertButtonB");
+        if (convertButtonB) {
+            convertButtonB.addEventListener("click", function () {
+                var dateInputB = document.getElementById("dateInputB");
+                if (dateInputB && dateInputB.value) {
+                    var inputDate = new Date(dateInputB.value);
+                    var inputUTCHours = inputDate.getUTCHours();
+                    var inputUTCMinutes = inputDate.getUTCMinutes();
+                    var inputUTCSeconds = inputDate.getUTCSeconds();
+                    var inputUTCMilliseconds = inputDate.getUTCMilliseconds();
+                    var totalInputSeconds = inputUTCHours * 3600 + inputUTCMinutes * 60 + inputUTCSeconds + inputUTCMilliseconds / 1000;
+                    var metricDaySeconds = totalInputSeconds % 360000;
+                    var metricHour = Math.floor(metricDaySeconds / 3600);
+                    var remainder = metricDaySeconds % 3600;
+                    var metricMinute = Math.floor(remainder / 60);
+                    var metricSecond = Math.floor(remainder % 60);
+                    var metricMilli = "";
+                    if (showMilliseconds) {
+                        metricMilli = "." + pad(Math.floor((metricDaySeconds - Math.floor(metricDaySeconds)) * 1000), 3);
+                    }
+                    var formattedMetricTime = pad(metricHour, 2) + ":" + pad(metricMinute, 2) + ":" + pad(metricSecond, 2) + metricMilli;
+                    var elapsedSeconds = (inputDate.getTime() - epoch.getTime()) / 1000;
+                    var metricDayCount = Math.floor(elapsedSeconds / 360000);
+                    var metricYear = Math.floor(metricDayCount / 300);
+                    var dayOfYear = (metricDayCount % 300) + 1;
+                    var formattedMetricDate = "Year " + metricYear + ", Day " + dayOfYear + " of 300";
+                    var converterResultB = document.getElementById("converterResultB");
+                    if (converterResultB) {
+                        converterResultB.innerHTML = "<strong>Option B Metric Time:</strong> " + formattedMetricTime + "<br/><strong>Metric Date:</strong> " + formattedMetricDate;
+                    }
+                }
+            });
+        }
+
+        // Reverse Converter: Option B → Gregorian
+        var reverseConvertButtonB = document.getElementById("reverseConvertButtonB");
+        if (reverseConvertButtonB) {
+            reverseConvertButtonB.addEventListener("click", function () {
+                var metricDaysInputB = document.getElementById("metricDaysInputB").value;
+                var metricTimeInputB = document.getElementById("metricTimeInputB").value;
+                if (!metricDaysInputB || !metricTimeInputB) return;
+                var days = parseInt(metricDaysInputB, 10);
+                var parts = metricTimeInputB.split(":").map(function (p) { return p.trim(); });
+                if (parts.length !== 3 || isNaN(parseInt(parts[0], 10)) || isNaN(parseInt(parts[1], 10)) || isNaN(parseInt(parts[2], 10))) {
+                    alert("Please enter Option B metric time in HH:MM:SS format.");
+                    return;
+                }
+                var hours = parseInt(parts[0], 10);
+                var minutes = parseInt(parts[1], 10);
+                var seconds = parseInt(parts[2], 10);
+                var metricTimeSec = hours * 3600 + minutes * 60 + seconds;
+                var actualSeconds = days * 360000 + metricTimeSec;
+                var gregorianDate = new Date(epoch.getTime() + actualSeconds * 1000);
+                var reverseConverterResultB = document.getElementById("reverseConverterResultB");
+                if (reverseConverterResultB) {
+                    reverseConverterResultB.textContent = "Gregorian Date: " + gregorianDate.toUTCString();
+                }
+            });
+        }
+
+        // -------------------------------
+        // Update All Displays Continuously
+        // -------------------------------
+        function updateAll() {
+            updateOptionA();
+            updateOptionB();
+            updateGregorianCalendar();
+        }
+        setInterval(updateAll, 100);
+        updateAll();
     </script>
 </body>
 
