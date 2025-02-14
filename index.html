@@ -7,6 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Smooth transitions on clock hands */
+        line.hand {
+            transition: transform 0.1s linear;
+        }
+    </style>
 </head>
 
 <body class="bg-gray-900 text-white">
@@ -16,7 +22,8 @@
             Metric Time System Comparison and Converters
         </h1>
         <p class="text-center mb-8">
-            Compare two proposed metric time systems, see live displays, and convert between Gregorian and metric time!
+            Compare two proposed metric time systems, see live displays (digital and analog), and convert between
+            Gregorian and metric time!
         </p>
 
         <!-- Global Milliseconds Checkbox -->
@@ -40,9 +47,27 @@
                     <br /><code>conversionFactor = 1,000,000 / 86,400 ≈ 11.57407</code>
                     <br />(1 metric second ≈ 0.0864 actual seconds).
                 </p>
+                <!-- Digital Display -->
                 <div class="bg-gray-700 p-4 rounded mb-4">
                     <p id="metricTimeA" class="font-mono text-lg">Metric Time (A): --:--:--</p>
                     <p id="metricDateA" class="font-mono text-lg">Metric Date (A): Year --, Day --</p>
+                </div>
+                <!-- Analog Clock for Option A -->
+                <div class="flex justify-center items-center mb-4">
+                    <svg id="analogClockA" width="200" height="200" viewBox="0 0 200 200">
+                        <!-- Clock Face -->
+                        <circle cx="100" cy="100" r="90" stroke="white" stroke-width="4" fill="none" />
+                        <!-- Tick Marks (generated via JS) -->
+                        <g id="ticksA"></g>
+                        <!-- Clock Hands -->
+                        <line id="clockHourA" class="hand" x1="100" y1="100" x2="100" y2="60" stroke="white"
+                            stroke-width="6" stroke-linecap="round" />
+                        <line id="clockMinuteA" class="hand" x1="100" y1="100" x2="100" y2="40" stroke="white"
+                            stroke-width="4" stroke-linecap="round" />
+                        <line id="clockSecondA" class="hand" x1="100" y1="100" x2="100" y2="30" stroke="red"
+                            stroke-width="2" stroke-linecap="round" />
+                        <circle cx="100" cy="100" r="4" fill="white" />
+                    </svg>
                 </div>
                 <p>
                     <strong>Example:</strong> At 12:00 UTC (43,200 sec since midnight), the metric time becomes roughly
@@ -63,10 +88,28 @@
                     For the time-of-day, we compute the elapsed seconds modulo 360,000.
                     The calendar divides the year into 300 days (or 10 months of 30 days each).
                 </p>
+                <!-- Digital Display -->
                 <div class="bg-gray-700 p-4 rounded mb-4">
                     <p id="metricTimeB" class="font-mono text-lg">Metric Time (B): --:--:--</p>
                     <p id="metricDateB" class="font-mono text-lg">Metric Date (B): Year --, Day --</p>
                     <p id="metricMonthB" class="font-mono text-lg"></p>
+                </div>
+                <!-- Analog Clock for Option B -->
+                <div class="flex justify-center items-center mb-4">
+                    <svg id="analogClockB" width="200" height="200" viewBox="0 0 200 200">
+                        <!-- Clock Face -->
+                        <circle cx="100" cy="100" r="90" stroke="white" stroke-width="4" fill="none" />
+                        <!-- Tick Marks (generated via JS) -->
+                        <g id="ticksB"></g>
+                        <!-- Clock Hands -->
+                        <line id="clockHourB" class="hand" x1="100" y1="100" x2="100" y2="60" stroke="white"
+                            stroke-width="6" stroke-linecap="round" />
+                        <line id="clockMinuteB" class="hand" x1="100" y1="100" x2="100" y2="40" stroke="white"
+                            stroke-width="4" stroke-linecap="round" />
+                        <line id="clockSecondB" class="hand" x1="100" y1="100" x2="100" y2="30" stroke="red"
+                            stroke-width="2" stroke-linecap="round" />
+                        <circle cx="100" cy="100" r="4" fill="white" />
+                    </svg>
                 </div>
                 <p>
                     <strong>Example:</strong> If 180,000 seconds have elapsed in the metric day, the time is 50:00:00.
@@ -152,13 +195,12 @@
             <p class="mb-4">
                 Welcome to the future of timekeeping! In our new system, a day is defined as 100 metric hours.
                 That is, “tomorrow” means 100 hours from now (360,000 seconds). The seconds remain the same as UTC
-                seconds.
-                For those who love comparisons, the current UTC time is also displayed.
+                seconds. For those who love comparisons, the current UTC time is also displayed.
             </p>
             <p class="mb-4">
                 <strong>Why this will be the future calendar &amp; time keeping format:</strong> Our system is simpler
-                and more logical.
-                Instead of a 24‑hour day, we use a 100‑hour day. Scheduling becomes intuitive – if someone says “see you
+                and more logical. Instead of a 24‑hour day, we use a 100‑hour day. Scheduling becomes intuitive – if
+                someone says “see you
                 tomorrow,” you know it’s 100 hours later.
             </p>
             <p class="mb-4">
@@ -230,13 +272,22 @@
                 just 100 hours.
             </p>
         </div>
+
+        <!-- Utterances Comments Integration -->
+        <div class="bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
+            <h2 class="text-2xl font-bold mb-4">Comments</h2>
+            <div id="comments"></div>
+            <script src="https://utteranc.es/client.js" repo="dragoscv/metric-time" issue-term="pathname"
+                label="comment" theme="github-dark" crossorigin="anonymous" async>
+                </script>
+        </div>
     </div>
 
     <!-- Footer -->
     <footer class="mt-8 text-sm text-gray-400 text-center">
         <p>
             View the source on
-            <a href="https://github.com/dragoscv/100-hours" class="underline hover:text-white" target="_blank"
+            <a href="https://github.com/dragoscv/metric-time" class="underline hover:text-white" target="_blank"
                 rel="noopener">GitHub</a>
             | Visit my website at
             <a href="https://dragoscatalin.ro" class="underline hover:text-white" target="_blank"
@@ -264,8 +315,158 @@
         // Epoch for calendar calculations: Jan 1, 2000 UTC.
         var epoch = new Date("2000-01-01T00:00:00Z");
 
+        // Variables to hold previous angles to avoid jump transitions.
+        var prevAngleHourA = 0, prevAngleMinuteA = 0, prevAngleSecondA = 0;
+        var prevAngleHourB = 0, prevAngleMinuteB = 0, prevAngleSecondB = 0;
+
+        // Generate tick marks for analog clocks.
+        function generateTickMarks(id, divisions) {
+            var g = document.getElementById(id);
+            if (!g) return;
+            var centerX = 100, centerY = 100, outer = 90, inner = 80, labelRadius = inner - 10;
+            for (var i = 0; i < divisions; i++) {
+                var angleDeg = i * (360 / divisions) - 90; // start at top
+                var rad = angleDeg * Math.PI / 180;
+                var x1 = centerX + outer * Math.cos(rad);
+                var y1 = centerY + outer * Math.sin(rad);
+                var x2 = centerX + inner * Math.cos(rad);
+                var y2 = centerY + inner * Math.sin(rad);
+                var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                line.setAttribute("x1", x1);
+                line.setAttribute("y1", y1);
+                line.setAttribute("x2", x2);
+                line.setAttribute("y2", y2);
+                line.setAttribute("stroke", "white");
+                line.setAttribute("stroke-width", "2");
+                g.appendChild(line);
+
+                // Label: value is i * (100 / divisions)
+                var labelVal = i * (100 / divisions);
+                var text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                text.textContent = (labelVal < 10 ? "0" : "") + Math.round(labelVal);
+                var lx = centerX + labelRadius * Math.cos(rad);
+                var ly = centerY + labelRadius * Math.sin(rad) + 4; // adjust vertical alignment
+                text.setAttribute("x", lx);
+                text.setAttribute("y", ly);
+                text.setAttribute("fill", "white");
+                text.setAttribute("font-size", "10");
+                text.setAttribute("text-anchor", "middle");
+                g.appendChild(text);
+            }
+        }
+
+        // Generate tick marks for both clocks on load.
+        generateTickMarks("ticksA", 10);
+        generateTickMarks("ticksB", 10);
+
         // -------------------------------
-        // Option A: Fully Metric System
+        // Analog Clock for Option A (Fully Metric)
+        // -------------------------------
+        function updateAnalogClockA(metricSecondsOfDay) {
+            // In Option A, 1,000,000 metric seconds per day.
+            // Each metric hour = 10,000 metric seconds.
+            var hourExactA = metricSecondsOfDay / 10000; // [0,100)
+            var angleHourA = hourExactA * (360 / 100); // each metric hour = 3.6°
+            var minuteExactA = (metricSecondsOfDay % 10000) / 100; // [0,100)
+            var angleMinuteA = minuteExactA * (360 / 100);
+            var secondExactA = metricSecondsOfDay % 100; // [0,100)
+            var angleSecondA = secondExactA * (360 / 100);
+
+            var clockHourA = document.getElementById("clockHourA");
+            var clockMinuteA = document.getElementById("clockMinuteA");
+            var clockSecondA = document.getElementById("clockSecondA");
+
+            // Update hour hand with fix for jump.
+            if (clockHourA) {
+                if (angleHourA < prevAngleHourA) {
+                    clockHourA.style.transition = "none";
+                    clockHourA.setAttribute("transform", "rotate(" + angleHourA + " 100 100)");
+                    void clockHourA.offsetWidth;
+                    clockHourA.style.transition = "transform 0.1s linear";
+                } else {
+                    clockHourA.setAttribute("transform", "rotate(" + angleHourA + " 100 100)");
+                }
+                prevAngleHourA = angleHourA;
+            }
+            // Update minute hand.
+            if (clockMinuteA) {
+                if (angleMinuteA < prevAngleMinuteA) {
+                    clockMinuteA.style.transition = "none";
+                    clockMinuteA.setAttribute("transform", "rotate(" + angleMinuteA + " 100 100)");
+                    void clockMinuteA.offsetWidth;
+                    clockMinuteA.style.transition = "transform 0.1s linear";
+                } else {
+                    clockMinuteA.setAttribute("transform", "rotate(" + angleMinuteA + " 100 100)");
+                }
+                prevAngleMinuteA = angleMinuteA;
+            }
+            // Update second hand.
+            if (clockSecondA) {
+                if (angleSecondA < prevAngleSecondA) {
+                    clockSecondA.style.transition = "none";
+                    clockSecondA.setAttribute("transform", "rotate(" + angleSecondA + " 100 100)");
+                    void clockSecondA.offsetWidth;
+                    clockSecondA.style.transition = "transform 0.1s linear";
+                } else {
+                    clockSecondA.setAttribute("transform", "rotate(" + angleSecondA + " 100 100)");
+                }
+                prevAngleSecondA = angleSecondA;
+            }
+        }
+
+        // -------------------------------
+        // Analog Clock for Option B (Hybrid)
+        // -------------------------------
+        function updateAnalogClockB(metricDaySecondsB) {
+            // In Option B, the day is 360,000 seconds.
+            var hourExactB = metricDaySecondsB / 3600; // [0,100)
+            var angleHourB = hourExactB * (360 / 100); // 3.6° per hour
+            var minuteExactB = (metricDaySecondsB % 3600) / 60; // [0,60)
+            var angleMinuteB = minuteExactB * (360 / 60); // 6° per minute
+            var secondExactB = metricDaySecondsB % 60; // [0,60)
+            var angleSecondB = secondExactB * (360 / 60); // 6° per second
+
+            var clockHourB = document.getElementById("clockHourB");
+            var clockMinuteB = document.getElementById("clockMinuteB");
+            var clockSecondB = document.getElementById("clockSecondB");
+
+            if (clockHourB) {
+                if (angleHourB < prevAngleHourB) {
+                    clockHourB.style.transition = "none";
+                    clockHourB.setAttribute("transform", "rotate(" + angleHourB + " 100 100)");
+                    void clockHourB.offsetWidth;
+                    clockHourB.style.transition = "transform 0.1s linear";
+                } else {
+                    clockHourB.setAttribute("transform", "rotate(" + angleHourB + " 100 100)");
+                }
+                prevAngleHourB = angleHourB;
+            }
+            if (clockMinuteB) {
+                if (angleMinuteB < prevAngleMinuteB) {
+                    clockMinuteB.style.transition = "none";
+                    clockMinuteB.setAttribute("transform", "rotate(" + angleMinuteB + " 100 100)");
+                    void clockMinuteB.offsetWidth;
+                    clockMinuteB.style.transition = "transform 0.1s linear";
+                } else {
+                    clockMinuteB.setAttribute("transform", "rotate(" + angleMinuteB + " 100 100)");
+                }
+                prevAngleMinuteB = angleMinuteB;
+            }
+            if (clockSecondB) {
+                if (angleSecondB < prevAngleSecondB) {
+                    clockSecondB.style.transition = "none";
+                    clockSecondB.setAttribute("transform", "rotate(" + angleSecondB + " 100 100)");
+                    void clockSecondB.offsetWidth;
+                    clockSecondB.style.transition = "transform 0.1s linear";
+                } else {
+                    clockSecondB.setAttribute("transform", "rotate(" + angleSecondB + " 100 100)");
+                }
+                prevAngleSecondB = angleSecondB;
+            }
+        }
+
+        // -------------------------------
+        // Update Digital Displays
         // -------------------------------
         function updateOptionA() {
             var now = new Date();
@@ -297,11 +498,9 @@
             if (metricDateAElement) {
                 metricDateAElement.textContent = "Metric Date (A): Year " + metricYearA + ", Day " + dayOfYearA + " of 100";
             }
+            updateAnalogClockA(metricSecondsOfDay);
         }
 
-        // -------------------------------
-        // Option B: Hybrid System
-        // -------------------------------
         function updateOptionB() {
             var now = new Date();
             var elapsedSeconds = (now.getTime() - epoch.getTime()) / 1000;
@@ -333,6 +532,7 @@
             if (metricMonthBElement) {
                 metricMonthBElement.textContent = "(Month " + pad(metricMonthB) + ", Day " + pad(metricDayOfMonthB) + ")";
             }
+            updateAnalogClockB(metricDaySecondsB);
         }
 
         // -------------------------------
@@ -356,7 +556,6 @@
         // -------------------------------
         // Option A Converters
         // -------------------------------
-        // Forward Converter: Gregorian → Option A
         var convertButtonA = document.getElementById("convertButtonA");
         if (convertButtonA) {
             convertButtonA.addEventListener("click", function () {
@@ -392,7 +591,6 @@
             });
         }
 
-        // Reverse Converter: Option A → Gregorian
         var reverseConvertButtonA = document.getElementById("reverseConvertButtonA");
         if (reverseConvertButtonA) {
             reverseConvertButtonA.addEventListener("click", function () {
@@ -422,7 +620,6 @@
         // -------------------------------
         // Option B Converters
         // -------------------------------
-        // Forward Converter: Gregorian → Option B
         var convertButtonB = document.getElementById("convertButtonB");
         if (convertButtonB) {
             convertButtonB.addEventListener("click", function () {
@@ -457,7 +654,6 @@
             });
         }
 
-        // Reverse Converter: Option B → Gregorian
         var reverseConvertButtonB = document.getElementById("reverseConvertButtonB");
         if (reverseConvertButtonB) {
             reverseConvertButtonB.addEventListener("click", function () {
